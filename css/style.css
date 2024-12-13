@@ -1,8 +1,8 @@
 * { box-sizing: border-box;}
 
-#count {
+/* #count {
     text-align: center;
-}
+} */
 
 #gameBoard {
     display: flex;

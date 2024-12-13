@@ -97,6 +97,11 @@ class Game {
             'darkgoldenrod', 'olive', 'dodgerblue'
         ]
 
+        this.scores = {
+            prevScore: 0,
+            bestScore: 0
+        }
+
         this.boxes = [
             {
                 id: 1,
@@ -143,6 +148,8 @@ class Game {
     }
 
     makeBoxes() {
+
+        let newBoxArr = []
         this.boxes.forEach(item => {
 
             const box = document.createElement('div')
@@ -152,19 +159,35 @@ class Game {
             box.style.width = '200px'
             box.style.height = '200px'
 
-            this.placeOnBoard(box)
-            this.handleClick(box)
+            newBoxArr = [...newBoxArr, box]
+
+            // this works but I want to randomize the boxes
+            // this.placeOnBoard(box)
+            // this.handleClick(box)
         })
 
+        // console.log(newBoxArr)
+        this.placeOnBoard(newBoxArr)
     }
 
-    placeOnBoard(item){
-        this.gameBoard.appendChild(item)
+
+    placeOnBoard(arr){
+        // randomly selects box and appends it each time.
+        let box
+        for (let i = arr.length - 1; i >= 0; i--) {
+            box = arr.splice(Math.floor(Math.random()* arr.length), 1)
+            // console.log(box)
+            this.gameBoard.appendChild(box[0])
+            console.log(box[0].style.backgroundColor)
+            this.handleClick(box[0])
+
+        }
+        
     }
 
     handleClick(item) {
         item.addEventListener('click', ()=> {
-            // console.log(item.style.backgroundColor)
+            console.log(item.style.backgroundColor)
             this.changeColor(item, this.getRandomColor())
             this.getCount()
         })
