@@ -206,8 +206,9 @@ class Game {
     checkWin() {
         if (this.matches == 9) {
             this.hasWon = !this.hasWon
+            console.log(this.hasWon)
+            // working on checkWin; need a game start button
         }
-        console.log(this.hasWon)
     }
 
 }
