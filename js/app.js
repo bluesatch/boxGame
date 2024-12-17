@@ -79,8 +79,10 @@ class Game {
         this.countDisplay = document.getElementById('countDisplay')
         this.bestScore = document.getElementById('bestScore')
         this.freezeColorDisplay = document.getElementById('freezeColorDisplay')
+        this.message = document.getElementById('message')
         this.freezeColor = ''
         this.hasWon = false 
+        this.gamePlay = false 
         this.colors = [
             'red', 'dodgerblue', 'pink',
             'rebeccapurple', 'orange', 'cyan',
@@ -130,6 +132,7 @@ class Game {
     }
 
     init() {
+        if (!this.gamePlay) return 
         this.getFreezeColor()
         this.makeBoxes()
         this.getMatches()
@@ -204,15 +207,77 @@ class Game {
     }
 
     checkWin() {
-        if (this.matches == 9) {
-            this.hasWon = !this.hasWon
-            console.log(this.hasWon)
+        if (this.matches == 9 && this.gamePlay == true) {
+            this.hasWon = true
             // working on checkWin; need a game start button
-        }
+            this.message.innerText = `You win and it took ${this.count} clicks!`
+            this.gameBoard.innerHTML = ''
+            this.gamePlay = false
+        } 
+        
+    }
+
+    resetGame() {
+        this.resetBoxes()
+        this.message.innerText = ''
+        this.matches = 0
+        this.count = 0
+        this.countDisplay.innerText = this.count
+        this.gamePlay = !this.gamePlay
+        this.hasWon = false
+        this.init()
+    }
+
+    resetBoxes() {
+        this.boxes = [
+            {
+                id: 1,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 2,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 3,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 4,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 5,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 6,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 7,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 8,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            },
+            {
+                id: 9,
+                color: this.colors[Math.floor(Math.random() * this.colors.length)]
+            }
+        ]
     }
 
 }
 
 const action = new Game() 
 
-action.init()
+const startBtn = document.getElementById('startBtn')
+
+startBtn.addEventListener('click', ()=> {
+    // action.gamePlay = !action.gamePlay
+    // action.gameBoard.innerHTML = ''
+    // action.init()
+    action.resetGame()
+})
