@@ -71,6 +71,7 @@
  * using class based Object
  */
 
+
 class Game {
 
     constructor() {
@@ -129,6 +130,11 @@ class Game {
                 color: this.colors[Math.floor(Math.random() * this.colors.length)]
             }
         ]
+
+        this.scores = {
+            currScore: this.count,
+            bestScore: 0
+        }
     }
 
     init() {
@@ -138,48 +144,8 @@ class Game {
         this.getMatches()
     }
 
-    makeBoxes() {
-        this.boxes.forEach(el => {
-            const box = document.createElement('div')
-
-            box.classList.add('box')
-            box.setAttribute('id', `box-${el.id}`)
-            box.dataset.id = el.id
-            box.style.width = '200px'
-            box.style.height = '200px'
-            box.style.backgroundColor = el.color
-
-            // console.log(`Box ${el.id} made`)
-            this.addToGameboard(this.gameBoard, box)
-            this.showMatches()
-
-            this.changeColor(box, this.boxes)
-
-        })
-    }
-
-    getMatches() {
-        for (let i = 0; i < this.boxes.length; i++) {
-            if (this.freezeColor == this.boxes[i].color) {
-                this.matches++
-                this.showMatches()
-            }
-        }
-    }
-
-    showMatches() {
-        this.matchDisplay.innerText = this.matches
-    }
-
-
     addToGameboard(parent, child) {
         return parent.appendChild(child)
-    }
-
-    getFreezeColor() {
-        this.freezeColor = this.colors[Math.floor(Math.random() * this.colors.length)]
-
-        this.freezeColorDisplay.innerText = this.freezeColor
     }
 
     changeColor(element, arr) {
@@ -209,23 +175,45 @@ class Game {
     checkWin() {
         if (this.matches == 9 && this.gamePlay == true) {
             this.hasWon = true
-            // working on checkWin; need a game start button
             this.message.innerText = `You win and it took ${this.count} clicks!`
             this.gameBoard.innerHTML = ''
             this.gamePlay = false
+            this.setScores()
         } 
         
     }
 
-    resetGame() {
-        this.resetBoxes()
-        this.message.innerText = ''
-        this.matches = 0
-        this.count = 0
-        this.countDisplay.innerText = this.count
-        this.gamePlay = !this.gamePlay
-        this.hasWon = false
-        this.init()
+    getFreezeColor() {
+        this.freezeColor = this.colors[Math.floor(Math.random() * this.colors.length)]
+
+        this.freezeColorDisplay.innerText = this.freezeColor
+    }
+
+    getMatches() {
+        for (let i = 0; i < this.boxes.length; i++) {
+            if (this.freezeColor == this.boxes[i].color) {
+                this.matches++
+                this.showMatches()
+            }
+        }
+    }
+
+    makeBoxes() {
+        this.boxes.forEach(el => {
+            const box = document.createElement('div')
+
+            box.classList.add('box')
+            box.setAttribute('id', `box-${el.id}`)
+            box.dataset.id = el.id
+            box.style.width = '200px'
+            box.style.height = '200px'
+            box.style.backgroundColor = el.color
+
+            this.addToGameboard(this.gameBoard, box)
+            this.showMatches()
+
+            this.changeColor(box, this.boxes)
+        })
     }
 
     resetBoxes() {
@@ -269,15 +257,59 @@ class Game {
         ]
     }
 
+    resetGame() {
+        this.resetBoxes()
+        this.message.innerText = ''
+        this.matches = 0
+        this.count = 0
+        this.countDisplay.innerText = this.count
+        this.gamePlay = !this.gamePlay
+        this.hasWon = false
+        this.init()
+    }
+
+    setScores() {
+        let bestScore 
+
+        if (this.count != 0 && this.count < this.scores.currScore) {
+            bestScore = this.count
+        } else {
+            bestScore = this.scores.currScore
+        }
+
+        this.scores = {
+            currScore: this.count,
+            bestScore: bestScore
+        }
+
+        // let bestScore 
+
+        // if (this.count < this.scores.currScore && this.count != 0) {
+        //     bestScore = this.count
+        // } else {
+        //     bestScore = this.scores.currScore
+        // }
+
+        // this.scores = {
+        //     prevScore: this.scores.currScore,
+        //     currScore: this.count,
+        //     bestScore: bestScore
+        // }
+
+        // console.log(this.scores)
+
+        // this.bestScore.innerText = this.scores.bestScore
+    }
+
+    showMatches() {
+        this.matchDisplay.innerText = this.matches
+    }
 }
 
-const action = new Game() 
+// const action = new Game() 
 
-const startBtn = document.getElementById('startBtn')
+// const startBtn = document.getElementById('startBtn')
 
-startBtn.addEventListener('click', ()=> {
-    // action.gamePlay = !action.gamePlay
-    // action.gameBoard.innerHTML = ''
-    // action.init()
-    action.resetGame()
-})
+// startBtn.addEventListener('click', ()=> action.resetGame())
+
+document.getElementById('startBtn').addEventListener('click', ()=> new Game().resetGame())
