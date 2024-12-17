@@ -132,7 +132,8 @@ class Game {
         ]
 
         this.scores = {
-            currScore: this.count,
+            prevScore: 0,
+            currScore: 0,
             bestScore: 0
         }
     }
@@ -260,7 +261,6 @@ class Game {
     }
 
     resetGame() {
-        console.log(this.scores)
         this.resetBoxes()
         this.message.innerText = ''
         this.matches = 0
@@ -272,15 +272,24 @@ class Game {
     }
 
     setScores() {
-        let bestScore 
-        if (this.count < this.scores.currScore && this.count != 0 ) {
-            bestScore = this.count
-        } else {
-            bestScore = this.scores.currScore
+
+        this.scores = {
+            ...this.scores,
+            prevScore: this.scores.currScore,
+            currScore: this.count,
+            bestScore: this.prevScore < this.scores.currScore ? this.count : this.prevScore
         }
 
-        this.scores.bestScore = bestScore
+        // this.scores.prevScore = this.scores.currScore
+        // this.scores.currScore = this.count
 
+        // if (this.scores.currScore < this.scores.prevScore && this.scores.currScore != 0) {
+        //     this.scores.bestScore = this.scores.currScore
+        // } else {
+        //     this.scores.bestScore = this.scores.prevScore
+        // }
+        
+        
         this.bestScore.innerText = this.scores.bestScore
     }
 
