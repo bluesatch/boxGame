@@ -156,6 +156,8 @@ class Game {
                     // test freezeColor here
                     if (this.freezeColor != arr[i].color) {
                         this.count++
+                        // testing
+                        this.scores.currScore = this.count
                         this.countDisplay.innerText = this.count
 
                         arr[i].color = this.colors[Math.floor(Math.random() * this.colors.length)]
@@ -258,6 +260,7 @@ class Game {
     }
 
     resetGame() {
+        console.log(this.scores)
         this.resetBoxes()
         this.message.innerText = ''
         this.matches = 0
@@ -270,35 +273,15 @@ class Game {
 
     setScores() {
         let bestScore 
-
-        if (this.count != 0 && this.count < this.scores.currScore) {
+        if (this.count < this.scores.currScore && this.count != 0 ) {
             bestScore = this.count
         } else {
             bestScore = this.scores.currScore
         }
 
-        this.scores = {
-            currScore: this.count,
-            bestScore: bestScore
-        }
+        this.scores.bestScore = bestScore
 
-        // let bestScore 
-
-        // if (this.count < this.scores.currScore && this.count != 0) {
-        //     bestScore = this.count
-        // } else {
-        //     bestScore = this.scores.currScore
-        // }
-
-        // this.scores = {
-        //     prevScore: this.scores.currScore,
-        //     currScore: this.count,
-        //     bestScore: bestScore
-        // }
-
-        // console.log(this.scores)
-
-        // this.bestScore.innerText = this.scores.bestScore
+        this.bestScore.innerText = this.scores.bestScore
     }
 
     showMatches() {
